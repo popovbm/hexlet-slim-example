@@ -1,0 +1,25 @@
+<h1>Users</h1>
+<?php if (count($flash) > 0) : ?>
+    <ul>
+        <?php foreach ($flash as $messages) : ?>
+            <?php foreach ($messages as $message) : ?>
+                <li><span style="color: green; font-weight: bold;"><?= $message ?></span></li>
+            <?php endforeach ?>
+        <?php endforeach ?>
+    </ul>
+<?php endif ?>
+<hr>
+<form action="" method="get">
+    <input type="search" name="term" value="<?= htmlspecialchars($term) ?>" />
+    <input type="submit" value="Search" />
+</form>
+<hr>
+<table>
+    <?php foreach ($users as $user) : ?>
+        <tr>
+            <td>
+                <a href="/users/<?= $user['userId'] ?>"><?= htmlspecialchars($user['nickname']) ?></li></a>
+            </td>
+        </tr>
+    <?php endforeach ?>
+</table>

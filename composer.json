@@ -1,0 +1,25 @@
+{
+    "name": "popovbm/hexlet-slim-example",
+    "autoload": {
+        "psr-4": {
+            "Popovbm\\HexletSlimExample\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ivan Popov",
+            "email": "popovbm@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "*",
+        "slim/psr7": "*",
+        "slim/http": "*",
+        "php-di/php-di": "*",
+        "guzzlehttp/guzzle": "*",
+        "tightenco/collect": "*",
+        "slim/php-view": "*",
+        "fzaninotto/faker": "*",
+        "slim/flash": "^0.4.0"
+    }
+}
