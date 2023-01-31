@@ -1,5 +1,7 @@
 <span>id = <?= htmlspecialchars($id) ?></span>
 </br>
-<span>nickname = <?= htmlspecialchars($nickname) ?></span>
+<span>nickname = <?= htmlspecialchars($name) ?></span>
 </br>
 <span>email = <?= htmlspecialchars($email) ?></span>
+<hr>
+<a href="/users/<?= htmlspecialchars($id) ?>/edit">Edit User</a>

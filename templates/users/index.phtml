@@ -18,8 +18,12 @@
     <?php foreach ($users as $user) : ?>
         <tr>
             <td>
-                <a href="/users/<?= $user['userId'] ?>"><?= htmlspecialchars($user['nickname']) ?></li></a>
+                <a href="/users/<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></li></a>
             </td>
         </tr>
     <?php endforeach ?>
 </table>
+<hr>
+<div>
+    <a href="/users/new">Create a new user</a>
+</div>
