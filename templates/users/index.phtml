@@ -14,16 +14,20 @@
     <input type="submit" value="Search" />
 </form>
 <hr>
-<table>
-    <?php foreach ($users as $user) : ?>
-        <tr>
-            <td>
-                <a href="/users/<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></li></a>
-            </td>
-        </tr>
+<?php if (count($users) === 0) : ?>
+    <div>Users list is empty</div>
+<?php else : ?>
+    <?php foreach ($users as $id => $user) : ?>
+        <div>
+            <a href="/users/<?= htmlspecialchars($id) ?>"><?= htmlspecialchars($user['name']) ?></a>
+        </div>
     <?php endforeach ?>
-</table>
+<?php endif ?>
 <hr>
 <div>
     <a href="/users/new">Create a new user</a>
 </div>
+<form action="/users" method="post">
+    <input type="hidden" name="_METHOD" value="DELETE">
+    <input type="submit" value="Clean">
+</form>
