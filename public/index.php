@@ -3,10 +3,10 @@
 // Подключение автозагрузки через composer
 require __DIR__ . '/../vendor/autoload.php';
 
+use App\Validator;
+use DI\Container;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
-use DI\Container;
-use App\Validator;
 
 const USERS = 'users.txt';
 
@@ -35,7 +35,9 @@ $app->get('/users', function ($request, $response) {
     $term = $request->getQueryParam('term');
     $messages = $this->get('flash')->getMessages();
     $users = json_decode($request->getCookieParam('users', json_encode([])), true);
-    $findedUser = collect($users)->filter(fn ($user) => empty($term) ? true : str_contains(strtolower($user['name']), strtolower($term)));
+    $findedUser = collect($users)->filter(
+        fn($user) => empty($term) ? true : str_contains(strtolower($user['name']), strtolower($term))
+    );
     $params = [
         'users' => $findedUser,
         'flash' => $messages,
@@ -92,7 +94,6 @@ $app->get('/users/{id}/edit', function ($request, $response, array $args) {
 })->setName('editUser');
 
 
-
 $router = $app->getRouteCollector()->getRouteParser();
 
 $app->post('/users', function ($request, $response) use ($router) {
@@ -128,10 +129,12 @@ $app->patch('/users/{id}', function ($request, $response, array $args) use ($rou
 
     if (count($errors) === 0) {
         $cook[$id]['name'] = $data['name'];
+        $encodedUsers = json_encode($cook);
+        $this->get('flash')->addMessage('success', 'User has been updated');
+        return $response->withHeader('Set-Cookie', "users={$encodedUsers}")->withRedirect(
+            $router->urlFor('editUser', ['id' => $id])
+        );
     }
-    $encodedUsers = json_encode($cook);
-    $this->get('flash')->addMessage('success', 'User has been updated');
-    return $response->withHeader('Set-Cookie', "users={$encodedUsers}")->withRedirect($router->urlFor('editUser', ['id' => $id]));
 
     $params = [
         'user' => $user,
@@ -159,7 +162,6 @@ $app->delete('/users', function ($request, $response) use ($router, $app) {
 $app->post('/users/login', function ($request, $response) use ($router) {
     $data = $request->getParsedBodyParam('user');
     $cook = json_decode($request->getCookieParam('users', json_encode([])), true);
-    $hasUser = [];
     $hasUser = collect($cook)->firstWhere('email', $data['email']);
     foreach ($cook as $key => $user) {
         if ($user['email'] === $data['email']) {
